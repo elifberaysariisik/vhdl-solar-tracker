@@ -1,2 +1,3 @@
 # vhdl-solar-tracker
 VHDL based solar tracker which tracks the position of the sun light
+The purpose of the project is to sustain more efficient system for solar panels to capture sunlight more efficiently by turning its direction automatically to adjust an angle which the solar panel is orthogonal to the sunlight throughout the daytime. Additionally, BASYS3 FPGA board will be used to adjust the direction of the solar panel and visualize the angle between sun light and the direction of the solar panel on the 4-digit 7- segment display. The coding background of the project is mainly based on VHDL which will be also integrated with Arduino in order to utilize voltage regulation and to implement the light-dependent resistors on the circuit.
