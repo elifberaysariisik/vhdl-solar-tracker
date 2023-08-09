@@ -1,0 +1,107 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity servovertical is
+Port (
+ clk: in std_logic;
+ rotate_state2: in std_logic_vector(3 downto 0);
+ serv_motor_output: out std_logic);
+end servovertical;
+architecture Behavioral of servovertical is
+signal number_pwm: integer:=0;
+begin
+process(rotate_state2,clk,number_pwm) begin
+if rising_edge(clk) then
+number_pwm<=number_pwm+1;
+
+ if rotate_state2="1100" then
+
+ if number_pwm<98000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+
+ elsif rotate_state2 ="1000" then
+
+ if number_pwm<120000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+elsif rotate_state2 ="0001" then
+
+ if number_pwm<200000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+ elsif rotate_state2 ="0010" then
+
+ if number_pwm<220000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+ elsif rotate_state2 ="0011" then
+
+ if number_pwm<240000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+
+-- elsif rotate_state ="011" then
+
+-- if number_pwm<160000 then
+-- serv_motor_output<='1';
+-- elsif number_pwm<2000000 then
+-- serv_motor_output<='0';
+-- else
+-- number_pwm<=0;
+-- end if;
+
+-- elsif rotate_state ="010" then
+
+-- if number_pwm<175000 then
+-- serv_motor_output<='1';
+-- elsif number_pwm<2000000 then
+-- serv_motor_output<='0';
+-- else
+-- number_pwm<=0;
+-- end if;
+
+-- elsif rotate_state ="001" then
+-- if number_pwm<190000 then
+-- serv_motor_output<='1';
+-- elsif number_pwm<2000000 then
+-- serv_motor_output<='0';
+-- else
+-- number_pwm<=0;
+-- end if;
+
+-- elsif rotate_state ="000" then
+
+-- if number_pwm<200000 then
+-- serv_motor_output<='1';
+-- elsif number_pwm<2000000 then
+-- serv_motor_output<='0';
+-- else
+-- number_pwm<=0;
+-- end if;
+
+ end if;
+
+end if;
+end process;
+
+end Behavioral;
