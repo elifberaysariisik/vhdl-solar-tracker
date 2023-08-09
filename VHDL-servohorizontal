@@ -1,0 +1,133 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity servohorizontal is
+Port (clk: in std_logic;
+
+ rotate_state: in std_logic_vector(3 downto 0);
+ manual_rotate: in std_logic_vector(3 downto 0);
+ serv_motor_output: out std_logic);
+end servohorizontal;
+architecture Behavioral of servohorizontal is
+signal number_pwm: integer:=0;
+begin
+process(rotate_state,clk,number_pwm) begin
+if rising_edge(clk) then
+number_pwm<=number_pwm+1;
+
+ if rotate_state="1100" then
+
+ if number_pwm<60000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+
+ elsif rotate_state ="1000" then
+
+ if number_pwm<85000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+
+ elsif rotate_state ="0100" then
+
+ if number_pwm<105000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+ elsif rotate_state ="0001" then
+
+ if number_pwm<140000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+
+ elsif rotate_state ="0010" then
+
+ if number_pwm<180000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+
+ elsif rotate_state ="0011" then
+
+ if number_pwm<205000 then
+ serv_motor_output<='1';
+ elsif number_pwm<2000000 then
+ serv_motor_output<='0';
+ else
+ number_pwm<=0;
+ end if;
+--else
+-- if manual_rotate(0) = '1' then
+-- if number_pwm<140000 then
+-- serv_motor_output<='1';
+-- elsif manual_rotate(1) = '1' then
+-- if number_pwm<180000 then
+-- serv_motor_output<='1';
+-- elsif manual_rotate(2) = '1' then
+-- if number_pwm<90000 then
+-- serv_motor_output<='1';
+-- elsif manual_rotate(3) = '1' then
+-- if number_pwm<70000 then
+-- serv_motor_output<='1';
+-- end if;
+---- elsif rotate_state ="011" then
+
+---- if number_pwm<160000 then
+---- serv_motor_output<='1';
+---- elsif number_pwm<2000000 then
+---- serv_motor_output<='0';
+---- else
+---- number_pwm<=0;
+---- end if;
+
+---- elsif rotate_state ="010" then
+
+---- if number_pwm<175000 then
+---- serv_motor_output<='1';
+---- elsif number_pwm<2000000 then
+---- serv_motor_output<='0';
+---- else
+---- number_pwm<=0;
+---- end if;
+
+---- elsif rotate_state ="001" then
+
+---- if number_pwm<190000 then
+---- serv_motor_output<='1';
+---- elsif number_pwm<2000000 then
+---- serv_motor_output<='0';
+---- else
+---- number_pwm<=0;
+---- end if;
+
+---- elsif rotate_state ="000" then
+
+---- if number_pwm<200000 then
+---- serv_motor_output<='1';
+---- elsif number_pwm<2000000 then
+---- serv_motor_output<='0';
+---- else
+---- number_pwm<=0;
+---- end if;
+
+end if;
+end if;
+end process;
+
+end Behavioral;
