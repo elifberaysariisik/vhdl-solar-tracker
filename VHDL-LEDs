@@ -1,0 +1,71 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned.all;
+entity leds is
+Port (clk:in STD_LOGIC;
+res: in STD_LOGIC;
+phase: in STD_LOGIC_VECTOR (1 downto 0);
+sec: in STD_LOGIC;
+state: in std_logic_vector (3 downto 0);
+led_anode : out STD_LOGIC_VECTOR (3 downto 0);
+led_cathode: out STD_LOGIC_VECTOR (6 downto 0));
+end leds;
+---------------------------------------------------------------------
+architecture rtl_display of leds is
+signal led_number: STD_LOGIC_VECTOR (15 downto 0);
+signal led_select: STD_LOGIC_VECTOR (3 downto 0);
+begin
+---------------------------------------------------------------------
+process(phase, led_number) begin
+case phase is
+when "00" => led_anode <= "0111";
+led_select <= led_number(15 downto 12);
+when "01" => led_anode <= "1011";
+led_select <= led_number(11 downto 8);
+when "10" => led_anode <= "1101";
+led_select <= led_number(7 downto 4);
+when "11" => led_anode <= "1110";
+led_select <= led_number(3 downto 0);
+when others => led_anode <= "0000";
+end case;
+end process;
+---------------------------------------------------------------------
+process(clk,res) begin
+if res = '1' then
+led_number <= (others => '0');
+elsif rising_edge(clk) then
+if state = "1100" then -- 90
+led_number <= "0000000010010000";
+elsif state = "1000" then -- 45
+ led_number <= "0000000001000101";
+ elsif state = "0100" then --
+ led_number <= "0000010001010000";
+ elsif state = "0011" then -- 120
+ led_number <= "0000000010010000";
+ elsif state = "0010" then -- 120
+ led_number <= "0000000001000101";
+ elsif state = "0001" then -- 120
+ led_number <= "0000000001000101";
+else
+led_number <= "0000000000000000";
+end if;
+end if;
+end process;
+---------------------------------------------------------------------
+process(led_select) begin
+case led_select is --1234567
+when "0000" => led_cathode <= "0000001"; -- "0"
+when "0001" => led_cathode <= "1001111"; -- "1"
+when "0010" => led_cathode <= "0010010"; -- "2"
+when "0011" => led_cathode <= "0000110"; -- "3"
+when "0100" => led_cathode <= "1001100"; -- "4"
+when "0101" => led_cathode <= "0100100"; -- "5"
+when "0110" => led_cathode <= "0100000"; -- "6"
+when "0111" => led_cathode <= "0001111"; -- "7"
+when "1000" => led_cathode <= "0000000"; -- "8"
+when "1001" => led_cathode <= "0000100"; -- "9"
+when others => led_cathode <= "1111111";
+end case;
+end process;
+---------------------------------------------------------------------
+end rtl_display;
