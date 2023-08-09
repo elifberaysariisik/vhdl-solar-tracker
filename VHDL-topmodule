@@ -1,0 +1,74 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity topmodule is
+ Port(
+ clk : in std_logic;
+ manual_rotate: in std_logic_vector(3 downto 0);
+ position : in std_logic_vector(3 downto 0);
+ vertical_pos : in std_logic_vector(3 downto 0);
+ led15, led14, led13, led12 : out std_logic;
+ servo_h : out std_logic;
+ servo_v : out std_logic;
+ led_anode : out STD_LOGIC_VECTOR (3 downto 0);
+ led_cathode : out STD_LOGIC_VECTOR (6 downto 0)
+
+ );
+end topmodule;
+architecture Behavioral of topmodule is
+signal res: std_logic;
+signal state: std_logic_vector(3 downto 0);
+component servo2control is
+Port (clk: in std_logic;
+ rotate_state2: in std_logic_vector(3 downto 0);
+ serv_motor_output: out std_logic);
+end component;
+component servocontrol is
+Port (clk: in std_logic;
+
+ rotate_state: in std_logic_vector(3 downto 0);
+ serv_motor_output: out std_logic);
+end component;
+Component topmodule_sevenseg is
+ Port( clk : in STD_LOGIC;
+res : in STD_LOGIC;
+state: in STD_LOGIC_vector (3 downto 0);
+led_anode : out STD_LOGIC_VECTOR (3 downto 0);
+led_cathode : out STD_LOGIC_VECTOR (6 downto 0));
+end component;
+begin
+servo_vertical: servovertical Port Map(clk => clk, rotate_state2 => vertical_pos,
+serv_motor_output => servo_v);
+servo_horizontal: servohorizontal Port Map(clk => clk, rotate_state => horizontal_pos,
+serv_motor_output => servo_h);
+sevensegment_display: topmodule_sevenseg Port Map( clk =>clk,res=> res, state=>position,
+led_anode=>led_anode, led_cathode=>led_cathode);
+process(clk ) begin
+ if rising_edge(clk) then
+ if (position = "1100") then
+ led15 <= '1';
+ led14 <= '1';
+ elsif (position = "1000") then
+ led15 <= '1';
+ led14 <= '1';
+ elsif (position = "0100") then
+ led15 <= '1';
+ led14 <= '0';
+ elsif (position = "0011") then
+ led13 <= '1';
+ led12 <= '1';
+ elsif (position = "0010") then
+ led13 <= '1';
+ led12 <= '1';
+ elsif (position = "0001") then
+ led13 <= '0';
+ led12 <= '1';
+else
+ led13 <= '0';
+ led12 <= '0';
+ led14 <= '0';
+ led15 <= '0';
+ end if;
+ end if;
+end process;
+end Behavioral;
