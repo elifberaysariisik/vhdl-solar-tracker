@@ -1,0 +1,28 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned.all;
+entity topmodule_sevenseg is
+Port ( clk : in STD_LOGIC;
+res : in STD_LOGIC;
+state: in STD_LOGIC_vector(3 downto 0);
+led_anode : out STD_LOGIC_VECTOR (3 downto 0);
+led_cathode : out STD_LOGIC_VECTOR (6 downto 0));
+end topmodule_sevenseg;
+architecture rtl of topmodule_sevenseg is
+signal phase_control: STD_LOGIC_VECTOR (1 downto 0);
+signal sec_control: STD_LOGIC;
+begin
+clock_control: entity work.counter(rtlclock)
+port map(clk => clk,
+res => res,
+phase => phase_control,
+sec => sec_control);
+led_display: entity work.leds(rtl_display)
+port map(clk => clk,
+res => res,
+phase => phase_control,
+sec => sec_control,
+state => state,
+led_anode => led_anode,
+led_cathode => led_cathode);
+end rtl;
